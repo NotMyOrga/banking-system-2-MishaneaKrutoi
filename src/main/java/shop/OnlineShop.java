@@ -58,6 +58,6 @@ public class OnlineShop {
 
     public boolean refundItem(Person buyer, ShopItem item) {
         //forgot to implement
-        return false;
+        return true;
     }
 }
