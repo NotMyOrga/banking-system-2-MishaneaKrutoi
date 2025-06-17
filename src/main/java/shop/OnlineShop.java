@@ -10,7 +10,6 @@ import java.util.List;
 public class OnlineShop {
     private final Bank bank;
     private final Person shopOwner;
-    private final String name;
     private final List<ShopItem> availableItems = new ArrayList<>(List.of(
             new ShopItem("Spezi", 20),
             new ShopItem("Cola", 30),
@@ -19,14 +18,9 @@ public class OnlineShop {
     private final HashMap<Person, List<ShopItem>> shoppingCarts = new HashMap<>();
     private final HashMap<Person, List<ShopItem>> soldItems = new HashMap<>();
 
-    public OnlineShop(Bank bank, Person shopOwner, String name) {
+    public OnlineShop(Bank bank, Person shopOwner) {
         this.bank = bank;
         this.shopOwner = shopOwner;
-        this.name = name;
-    }
-
-    public String getName(){
-        return name;
     }
 
     public List<ShopItem> getAvailableItems() {
