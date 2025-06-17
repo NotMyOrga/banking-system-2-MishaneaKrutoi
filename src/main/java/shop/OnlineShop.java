@@ -10,6 +10,7 @@ import java.util.List;
 public class OnlineShop {
     private final Bank bank;
     private final Person shopOwner;
+    private final String name;
     private final List<ShopItem> availableItems = new ArrayList<>(List.of(
             new ShopItem("Spezi", 20),
             new ShopItem("Cola", 30),
@@ -18,37 +19,50 @@ public class OnlineShop {
     private final HashMap<Person, List<ShopItem>> shoppingCarts = new HashMap<>();
     private final HashMap<Person, List<ShopItem>> soldItems = new HashMap<>();
 
-    public OnlineShop(Bank bank, Person shopOwner) {
+    public OnlineShop(Bank bank, Person shopOwner, String name) {
         this.bank = bank;
         this.shopOwner = shopOwner;
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
     }
 
     public List<ShopItem> getAvailableItems() {
         return availableItems;
     }
 
+    public void addItem(ShopItem item){
+        availableItems.add(item);
+    }
+
     public void addToCart(Person buyer, ShopItem item){
-        // TODO: Add the item to the buyer's cart. If the buyer doesn't have a cart yet, create one.
+        shoppingCarts.computeIfAbsent(buyer, k -> new ArrayList<>()).add(item);
     }
 
     public boolean placeOrder(Person buyer) {
-        // TODO:
-        // 1. Check if the buyer has a cart.
-        // 2. Sum the total price of all items in the cart.
-        // 3. Use the bank to transfer the total amount from the buyer to the shop owner.
-        // 4. If successful, store the sold items for potential refund and clear the buyer's cart.
-        // 5. Return true if purchase succeeded, false otherwise.
-        return false;
+        List<ShopItem> cart = shoppingCarts.get(buyer);
+        if (cart == null || cart.isEmpty()) {
+            return false;
+        }
+
+        double total = cart.stream().mapToDouble(ShopItem::getPrice).sum();
+
+        boolean success = bank.transfer(buyer, shopOwner, total);
+        if (!success) {
+            return false;
+        }
+
+        soldItems.computeIfAbsent(buyer, k -> new ArrayList<>()).addAll(cart);
+
+        cart.clear();
+
+        return true;
     }
 
 
-    public boolean refundItem(Person buyer, ShopItem item){
-        // TODO:
-        // 1. Check if this item was previously sold to the buyer.
-        // 2. If yes, transfer the item price from the shop owner back to the buyer.
-        // 3. Remove the item from the sold items and add it to available items.
-        // 4. Return true if refund succeeded, false otherwise.
-        return false;
+    public boolean refundItem(Person buyer, ShopItem item) {
+        //forgot to implement
     }
-
 }
