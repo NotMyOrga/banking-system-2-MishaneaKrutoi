@@ -24,6 +24,3 @@ The shop is pre-filled with three items:
 - Spezi – 20€
 - Cola – 30€
 - Sprite – 25€
-
-### Run command
-`gradle test` (or `./gradlew test`)
